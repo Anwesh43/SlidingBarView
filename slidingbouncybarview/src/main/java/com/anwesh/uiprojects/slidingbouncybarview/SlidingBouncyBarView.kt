@@ -207,4 +207,13 @@ class SlidingBouncyBarView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : SlidingBouncyBarView {
+            val view : SlidingBouncyBarView = SlidingBouncyBarView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
