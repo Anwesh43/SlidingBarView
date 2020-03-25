@@ -14,19 +14,19 @@ import android.content.Context
 import android.app.Activity
 
 val nodes : Int = 5
-val scGap : Float = 0.02f
+val scGap : Float = 0.02f / 3
 val strokeFactor : Float = 90f
 val sizeFactor: Float = 2.9f
 val foreColor : Int = Color.parseColor("#673AB7")
 val backColor : Int = Color.parseColor("#BDBDBD")
-val delay : Long = 20
+val delay : Long = 15
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
 
-fun Canvas.drawSlidingBouncyBar(i : Int, scale : Float, w : Float, size : Float, paint : Paint) {
+fun Canvas.drawSlidingBouncyBar(scale : Float, w : Float, size : Float, paint : Paint) {
     val sf : Float = scale.sinify()
     val sc1 : Float = sf.divideScale(0, 3)
     val sc2 : Float = sf.divideScale(1, 3)
@@ -48,9 +48,10 @@ fun Canvas.drawSBBNode(i : Int, scale : Float, paint : Paint) {
     paint.color = foreColor
     paint.strokeCap = Paint.Cap.ROUND
     paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.style = Paint.Style.FILL_AND_STROKE
     save()
     translate(0f, gap * (i + 1))
-    drawSlidingBouncyBar(i, scale, w, size, paint)
+    drawSlidingBouncyBar(scale, w, size, paint)
     restore()
 }
 
