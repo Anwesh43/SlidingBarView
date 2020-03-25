@@ -25,3 +25,31 @@ fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.inverse(), maxScale(i, n)) * n
 fun Float.sinify() : Float = Math.sin(this * Math.PI).toFloat()
+
+fun Canvas.drawSlidingBouncyBar(i : Int, scale : Float, w : Float, size : Float, paint : Paint) {
+    val sf : Float = scale.sinify()
+    val sc1 : Float = sf.divideScale(0, 3)
+    val sc2 : Float = sf.divideScale(1, 3)
+    val sc3 : Float = sf.divideScale(2, 3)
+    val x : Float = (w - size) * sc2
+    val y1 : Float = -size * ((1 - sc1) + sc3)
+    save()
+    translate(x, 0f)
+    drawLine(0f, 0f, size, 0f, paint)
+    drawRect(RectF(0f, y1, size, 0f), paint)
+    restore()
+}
+
+fun Canvas.drawSBBNode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    val gap : Float = h / (nodes + 1)
+    val size : Float = gap / sizeFactor
+    paint.color = foreColor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    save()
+    translate(0f, gap * (i + 1))
+    drawSlidingBouncyBar(i, scale, w, size, paint)
+    restore()
+}
