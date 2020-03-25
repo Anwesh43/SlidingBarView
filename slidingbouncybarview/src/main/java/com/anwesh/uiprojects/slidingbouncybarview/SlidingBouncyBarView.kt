@@ -182,4 +182,26 @@ class SlidingBouncyBarView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : SlidingBouncyBarView) {
+
+        private val animator : Animator = Animator(view)
+        private val sbb : SlidingBouncyBar = SlidingBouncyBar(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(backColor)
+            sbb.draw(canvas, paint)
+            animator.animate {
+                sbb.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            sbb.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
